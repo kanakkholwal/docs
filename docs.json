@@ -29,7 +29,20 @@
             "pages": [
               "packages/index",
               "packages/nexo-mdx",
-              "packages/remark-plugins"
+              "packages/remark-plugins",
+              "packages/pdf-tables-parser"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Templates",
+        "groups": [
+          {
+            "group": "Templates",
+            "pages": [
+              "templates/index",
+              "templates/mail-system"
             ]
           }
         ]

@@ -1,0 +1,224 @@
+---
+title: 'Mailer System'
+description: 'A React-based Markdown editor with TypeScript support, built with shadcn UI and Tailwind CSS.An extendable serverless mailing system with Nextjs and React mail'
+icon: 'inbox'
+author: 'Kanak Kholwal'
+keywords: ['mail', 'nextjs', 'react-mail']
+---
+
+## Overview
+
+The **Mail System** template provides an extendable, serverless mailing system built with Next.js, TypeScript, and React Mail. It allows you to quickly integrate email sending capabilities into your Next.js application using a zero-config API and customizable email templates.
+
+## Features
+
+* **Serverless API endpoint** for sending emails via `/api/send`.
+* **Environment-based configuration** using `.env` files.
+* **Customizable React Mail templates** located in the `emails` directory.
+* **Built-in TypeScript types** for strong typing and IntelliSense support.
+* **Deploys seamlessly** on Vercel and other serverless platforms.
+
+## Prerequisites
+
+* Node.js v16 or newer
+* pnpm, npm, or yarn
+* A mailing service provider (SMTP, SendGrid, Mailgun, etc.)
+
+## Installation
+
+1. **Clone the repository**
+
+```bash
+# via Git
+git clone https://github.com/kanakkholwal/mail-system.git
+cd mail-system
+```
+
+2. **Install dependencies**
+
+```bash
+# using pnpm
+pnpm install
+
+# or npm
+npm install
+
+# or yarn
+yarn install
+```
+
+3. **Copy environment file**
+
+```bash
+cp .env.example .env
+```
+
+4. **Configure environment variables**
+
+Edit the `.env` file at the project root and set your mailing service credentials:
+
+```dotenv
+# .env
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=username
+SMTP_PASS=password
+FROM_EMAIL=no-reply@example.com
+```
+
+## Project Structure
+
+```text
+├── /.env.example          # Example environment variables
+├── /app                   # Next.js App directory (Next 13+)
+│   ├── /api               # API routes
+│   │   └── send.ts        # POST /api/send endpoint
+│   └── /page.tsx          # Landing page example
+├── /emails                # React Mail templates
+│   ├── WelcomeEmail.tsx   # Example email component
+│   └── ResetPassword.tsx  # Example email component
+├── /types                 # Shared TypeScript types
+│   └── mail.ts            # Types for mail API
+├── /public                # Static assets
+├── next.config.ts         # Next.js configuration
+├── project.config.ts      # Vercel project settings
+├── tsconfig.json          # TypeScript configuration
+└── package.json           # Project manifest
+```
+
+## API Endpoint: `/api/send`
+
+The `/api/send` endpoint accepts a `POST` request with the following JSON payload:
+
+```ts
+// types/mail.ts
+export interface SendMailPayload {
+  to: string | string[];
+  subject: string;
+  template: string;
+  data?: Record<string, any>;
+}
+```
+
+### Example Request
+
+```bash
+curl -X POST http://localhost:3000/api/send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "user@example.com",
+    "subject": "Welcome to Our App!",
+    "template": "WelcomeEmail",
+    "data": { "name": "Jane Doe",email:"johndoe@example.com",platform_name:"Nexonauts" }
+  }'
+```
+
+### Response
+
+* **200 OK**: Email sent successfully.
+* **4xx/5xx**: Error sending email.
+
+## Creating Custom Email Templates
+
+1. **Add a new file** in `emails/`, e.g., `OrderConfirmation.tsx`.
+
+2. **Export a React component** that returns your email layout:
+
+```tsx
+import {
+    Button,
+    Column,
+    Heading,
+    Hr,
+    Img,
+    Link,
+    Preview,
+    Row,
+    Section,
+    Text,
+  } from "@react-email/components";
+
+  import { z } from "zod";
+
+const payloadSchema = z.record(
+    z.union([z.string(), z.number(), z.array(z.string()), z.array(z.number())])
+  );
+
+type Payload = z.infer<typeof payloadSchema>;
+
+// every email component must export a default function with the name of the file
+// and a payload prop of type Payload 
+
+  export function WelcomeEmail({ payload }: { payload: Payload }) {
+    const { email, name,platform_name } = payload;
+  
+    return (
+      <>
+      <Preview>Welcome to ${platform_name}! Verify your email address to get started.</Preview>
+      <Text className="text-gray-800 text-lg">
+        Hi {userName},{"\n"}
+        Welcome to <strong>${platform_name}</strong>! We're thrilled to have you
+        join our community.
+      </Text>
+      <Text className="text-gray-800 mt-4">
+        Please verify your email address (${payload.email}) to get started.
+      </Text>
+      <Button
+        className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700"
+        href={verifyUrl}
+      >
+        Verify Email
+      </Button>
+      <Hr className="border-gray-200 my-6" />
+      <Text className="text-gray-600 text-sm">
+        If you didn't create an account, you can safely ignore this email.
+      </Text>
+      <Text className="text-gray-600 text-sm mt-6">
+        — The ${platform_name} Team
+      </Text>
+      </>
+    );
+  }
+```
+
+3. **Update your `.env`** if needed for new variables.
+
+4. **Send using the API** by setting `template` to your component filename (without extension).
+
+## Environment Variables
+
+| Name         | Description                              | Required | Default |
+| ------------ | ---------------------------------------- | -------- | ------- |
+| `SMTP_HOST`  | SMTP server host (e.g., smtp.gmail.com)  | Yes      | —       |
+| `SMTP_PORT`  | SMTP server port (e.g., 587)             | Yes      | —       |
+| `SMTP_USER`  | SMTP username/email                      | Yes      | —       |
+| `SMTP_PASS`  | SMTP password                            | Yes      | —       |
+| `FROM_EMAIL` | Default "from" address for outgoing mail | Yes      | —       |
+
+## Deployment
+
+Deploy to Vercel with zero configuration:
+
+1. **Push** your code to GitHub.
+2. **Import** the repository in Vercel.
+3. **Set** the same environment variables in Vercel Dashboard.
+4. **Deploy**! Emails will work out of the box.
+
+## Contributing
+
+1. **Fork** the [repository](https://github.com/kanakkholwal/mail-system).
+2. **Create** a new branch: `git checkout -b feature/my-feature`.
+3. **Commit** your changes: `git commit -m 'Add my feature'`.
+4. **Push** to the branch: `git push origin feature/my-feature`.
+5. **Open** a Pull Request.
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+## Support
+
+For issues and suggestions, please visit the [GitHub issues page](https://github.com/kanakkholwal/mail-system/issues).
+
