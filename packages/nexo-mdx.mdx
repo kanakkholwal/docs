@@ -1,0 +1,52 @@
+---
+title: 'Nexo MDX Editor'
+description: 'A React-based Markdown editor with TypeScript support, built with shadcn UI and Tailwind CSS'
+icon: 'code'
+---
+
+## Features
+
+- **React Component**: Easily integratable Markdown editor
+- **TypeScript Support**: Fully typed for better developer experience
+- **Accessibility**: Native textarea support for form accessibility
+- **Comprehensive Markdown**: Full CommonMark specification support
+- **Customizable UI**: Pluggable function bars and complete UI control
+- **Theme Integration**: Built with Shadcn UI components, inherits your Tailwind/Shadcn UI theme
+- **Extensible**: Supports [remark plugins](https://github.com/kanakkholwal/remark-plugs) for additional functionality
+
+## Installation
+
+Choose your preferred package manager:
+
+```shell
+npm install nexo-mdx --save
+# or
+bun install nexo-mdx
+# or
+pnpm add nexo-mdx
+```
+
+## Basic Usage
+- Follow these steps to integrate nexo-mdx into your project:
+- Import the Editor: Import NexoMdxEditor from the package.
+- Manage State: Utilize React's state management to handle the editor's content.
+- Render the Editor: Include the editor component in your JSX.
+
+```jsx editor.jsx
+
+
+import React, { useState } from 'react';
+import NexoMdxEditor from 'nexo-mdx';
+
+export function MDXEditor() {
+  const [mdValue, setMdValue] = useState('');
+
+  return (
+    <NexoMdxEditor
+      value={mdValue}
+      onChange={(value, _) => setMdValue(value)}
+    />
+  );
+}
+
+```

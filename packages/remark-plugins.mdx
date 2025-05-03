@@ -1,0 +1,74 @@
+---
+title: 'Remark plugins'
+description: 'Custom remark plugins for enhanced Markdown processing'
+icon: 'plug'
+---
+
+<Note> 
+A collection of custom [remark](https://remark.js.org/) plugins designed to enhance Markdown processing with extended syntax and embedded content capabilities.
+ </Note>
+
+## Installation
+
+```shell
+npm install remark-plugins remark-directive
+# or
+yarn add remark-plugins remark-directive
+# or
+bun install remark-plugins remark-directive
+# or
+pnpm add remark-plugins remark-directive
+```
+
+<Note> 
+Ensure that `remark-directive` is installed and included before `remark-plugins` as it is a required peer dependency. 
+</Note>
+
+
+## Usage
+
+```jsx markdown-render.jsx
+import ReactMarkdown from 'react-markdown';
+import remarkDirective from 'remark-directive';
+import { remarkCallout, remarkEmbed, slugifyHeading } from 'remark-plugins';
+
+<ReactMarkdown
+  remarkPlugins={[remarkDirective, remarkCallout, remarkEmbed, slugifyHeading]}
+>
+  {markdownContent}
+</ReactMarkdown>;
+
+```
+
+## Plugins
+
+### Callout Plugin
+Transforms custom callout blocks in markdown into styled callouts.
+
+
+```markdown
+::callout[warn]{title=Warning}
+This is a custom note content.
+:::
+```
+
+### Embed Plugin
+
+Transforms custom embed blocks in markdown into iframe embeds for YouTube, Vimeo, and other platforms.
+
+```markdown
+::embed[youtube]{id=yaodD79Q4iE .some-class}
+# or
+::embed[iframe]{id=http://google.com .some-class}
+
+```
+### Slugify Headings Plugin
+
+Automatically generates slugified IDs for headings in markdown.
+
+```markdown
+# My Heading
+
+This heading will have an ID of `my-heading`.
+
+```
