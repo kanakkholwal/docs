@@ -42,7 +42,8 @@
             "group": "Templates",
             "pages": [
               "templates/index",
-              "templates/mail-system"
+              "templates/mail-system",
+              "templates/crawler-for-llms"
             ]
           }
         ]
