@@ -43,7 +43,8 @@
             "pages": [
               "templates/index",
               "templates/mail-system",
-              "templates/crawler-for-llms"
+              "templates/crawler-for-llms",
+              "templates/pkg-template"
             ]
           }
         ]

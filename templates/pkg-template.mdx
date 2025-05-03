@@ -1,0 +1,55 @@
+---
+title: "Package Template"
+description: "A starter repo for building and publishing TypeScript packages"
+icon: "window"
+---
+
+
+A reusable boilerplate for authoring, linting, versioning, and publishing TypeScript libraries, with out-of-the-box CI/CD via GitHub Actions. 
+
+## Features
+
+- ✅ Written in TypeScript, ready for both browser and Node.js environments  
+- ✅ Automated versioning & changelogs via Changesets to seamlessly handle version upgrades with PRs 
+- ✅ Built-in `lint` and `release` workflows for npm publishing  
+- ✅ Zero-config bundling with `tsup` 
+
+## Setup
+1. **Install dependencies** 
+   - Clone the repository and navigate to the project directory.
+   - Install the dependencies using `pnpm` (or `npm` if you prefer).
+   - If you don't have `pnpm` installed, you can install it globally using npm:
+
+   ```bash
+   pnpm install
+   ```
+2. **Upgrade dependencies when needed**
+
+   ```bash
+      pnpx ncu -u
+   ```
+3. **Configure GitHub Secrets**  
+
+   - Add `NPM_TOKEN` to `repository>settings>secrets and variables>actions` to publish package to npm registry
+   - Upgrade `node-version` and `pnpm` version in workflow files if new `lts` version is available.
+   - Navigate to `Repo > Settings > Actions. Something like: https://github.com/<YOUR-PROFILE>/<YOUR-REPO>/settings/actions.`
+   - Enable the settings to `Allow GitHub Actions to create and approve pull requests`
+
+## Dependencies
+
+- [@changesets/cli](https://www.npmjs.com/package/@changesets/cli): Helps you manage the versioning and changelog entries for your packages, with a focus on versioning within a mono-repository (though we support single-package repositories too).
+- [Typescript](https://www.npmjs.com/package/typescript): TypeScript is a language for application-scale JavaScript. TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript.
+- [tsup](https://www.npmjs.com/package/tsup): Bundle your TypeScript library with no config.
+   
+
+
+## Contributing
+
+Contributions are welcome! If you find a bug or have a feature request, please open an issue or submit a pull request on [GitHub](https://github.com/kanakkholwal/pkg-template).
+
+## License 
+This project is licensed under the ISC License. See the LICENSE file for details.
+
+## Support
+For issues and suggestions, please visit the [GitHub issues page](https://github.com/kanakkholwal/pkg-template/issues).
+
