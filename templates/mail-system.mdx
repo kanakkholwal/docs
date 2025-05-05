@@ -65,11 +65,9 @@ Edit the `.env` file at the project root and set your mailing service credential
 
 ```dotenv
 # .env
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=username
-SMTP_PASS=password
-FROM_EMAIL=no-reply@example.com
+MAIL_EMAIL=<SMTP_EMAIL>
+MAIL_PASSWORD=<SMTP_PASSWORD>
+SERVER_IDENTITY=<SERVER_IDENTITY> # A authentication header to communicate with your backend securely
 ```
 
 ## Project Structure
