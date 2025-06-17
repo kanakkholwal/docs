@@ -10,11 +10,6 @@ keywords: ['mail', 'nextjs', 'react-mail']
 
 The **Mail System** template provides an extendable, serverless mailing system built with Next.js, TypeScript, and React Mail. It allows you to quickly integrate email sending capabilities into your Next.js application using a zero-config API and customizable email templates.
 
-<Link
-  href="/images/">
-  GitHub
-
-</Link>
 
 ## Features
 
@@ -26,7 +21,7 @@ The **Mail System** template provides an extendable, serverless mailing system b
 
 ## Prerequisites
 
-* Node.js v16 or newer
+* Node.js v120 or newer
 * pnpm, npm, or yarn
 * A mailing service provider (SMTP, SendGrid, Mailgun, etc.)
 
@@ -76,13 +71,14 @@ SERVER_IDENTITY=<SERVER_IDENTITY> # A authentication header to communicate with 
 ├── /.env.example          # Example environment variables
 ├── /app                   # Next.js App directory (Next 13+)
 │   ├── /api               # API routes
-│   │   └── send.ts        # POST /api/send endpoint
+│   │   └── send/route..ts # POST /api/send endpoint
 │   └── /page.tsx          # Landing page example
 ├── /emails                # React Mail templates
-│   ├── WelcomeEmail.tsx   # Example email component
-│   └── ResetPassword.tsx  # Example email component
+│   ├── template_[:template].tsx   # Example email component
+|   ├── templates.tsx      # All templated imported and mapped exported
+│   └── helper.ts          # Helper function to fire email send
 ├── /types                 # Shared TypeScript types
-│   └── mail.ts            # Types for mail API
+│   └── schema.ts          # Zod schema for data validation
 ├── /public                # Static assets
 ├── next.config.ts         # Next.js configuration
 ├── project.config.ts      # Vercel project settings
@@ -95,12 +91,12 @@ SERVER_IDENTITY=<SERVER_IDENTITY> # A authentication header to communicate with 
 The `/api/send` endpoint accepts a `POST` request with the following JSON payload:
 
 ```ts
-// types/mail.ts
+// 
 export interface SendMailPayload {
-  to: string | string[];
+  targets: string | string[];
+  template_key:string;
   subject: string;
-  template: string;
-  data?: Record<string, any>;
+  payload?: Record<string, string | number | string[] | number[]>;
 }
 ```
 
@@ -109,11 +105,13 @@ export interface SendMailPayload {
 ```bash
 curl -X POST http://localhost:3000/api/send \
   -H "Content-Type: application/json" \
+  -H "X-IDENTITY-KEY:x-api-key" \
   -d '{
     "to": "user@example.com",
     "subject": "Welcome to Our App!",
-    "template": "WelcomeEmail",
-    "data": { "name": "Jane Doe",email:"johndoe@example.com",platform_name:"Nexonauts" }
+    "template_key": "welcome_verify",
+    "targets":"acme@acme.com",
+    "payload": { "name": "Jane Doe",email:"johndoe@example.com",platform_name:"Acme" }
   }'
 ```
 
@@ -124,7 +122,7 @@ curl -X POST http://localhost:3000/api/send \
 
 ## Creating Custom Email Templates
 
-1. **Add a new file** in `emails/`, e.g., `OrderConfirmation.tsx`.
+1. **Add a new file** in `emails/`, e.g., `template_order-confirmation.tsx`.
 
 2. **Export a React component** that returns your email layout:
 
@@ -141,44 +139,21 @@ import {
     Section,
     Text,
   } from "@react-email/components";
+import type { EmailPayload } from "@/types/schema";
 
-  import { z } from "zod";
 
-const payloadSchema = z.record(
-    z.union([z.string(), z.number(), z.array(z.string()), z.array(z.number())])
-  );
-
-type Payload = z.infer<typeof payloadSchema>;
-
-// every email component must export a default function with the name of the file
-// and a payload prop of type Payload 
-
-  export function WelcomeEmail({ payload }: { payload: Payload }) {
-    const { email, name,platform_name } = payload;
+export function OrderConfirmation({ payload }: { payload: EmailPayload }) {
+      const order = payload.order as string;
+      const userName = payload.name as string;
   
     return (
       <>
-      <Preview>Welcome to ${platform_name}! Verify your email address to get started.</Preview>
+      <Preview>Order Confirmation</Preview>
       <Text className="text-gray-800 text-lg">
         Hi {userName},{"\n"}
-        Welcome to <strong>${platform_name}</strong>! We're thrilled to have you
-        join our community.
       </Text>
       <Text className="text-gray-800 mt-4">
-        Please verify your email address (${payload.email}) to get started.
-      </Text>
-      <Button
-        className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700"
-        href={verifyUrl}
-      >
-        Verify Email
-      </Button>
-      <Hr className="border-gray-200 my-6" />
-      <Text className="text-gray-600 text-sm">
-        If you didn't create an account, you can safely ignore this email.
-      </Text>
-      <Text className="text-gray-600 text-sm mt-6">
-        — The ${platform_name} Team
+        Your order #{order} has been confirmed and will reach you in X days.
       </Text>
       </>
     );
@@ -189,15 +164,17 @@ type Payload = z.infer<typeof payloadSchema>;
 
 4. **Send using the API** by setting `template` to your component filename (without extension).
 
+5. Other ** Setiing ** can be changed in `project.config.ts` file.
+
 ## Environment Variables
 
 | Name         | Description                              | Required | Default |
 | ------------ | ---------------------------------------- | -------- | ------- |
-| `SMTP_HOST`  | SMTP server host (e.g., smtp.gmail.com)  | Yes      | —       |
-| `SMTP_PORT`  | SMTP server port (e.g., 587)             | Yes      | —       |
-| `SMTP_USER`  | SMTP username/email                      | Yes      | —       |
-| `SMTP_PASS`  | SMTP password                            | Yes      | —       |
-| `FROM_EMAIL` | Default "from" address for outgoing mail | Yes      | —       |
+| `SMTP_HOST`  | SMTP server host (e.g., smtp.gmail.com)  | No       | "smtp-relay.sendinblue.com"      |
+| `SMTP_PORT`  | SMTP server port (e.g., 587)             | No       | 587      |
+| `MAIL_EMAIL`  | SMTP username/email                     | Yes      | —       |
+| `MAIL_PASSWORD` | SMTP password                         | Yes      | —       |
+| `IDENTITY_KEY ` | Auth Key                              | Yes      | —       |
 
 ## Deployment
 
