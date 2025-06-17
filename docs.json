@@ -16,7 +16,8 @@
           {
             "group": "Get Started",
             "pages": [
-              "index"
+              "index",
+              "guides/client-lib-in-ts"
             ]
           }
         ]
