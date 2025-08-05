@@ -30,6 +30,7 @@
             "pages": [
               "packages/index",
               "packages/nexo-mdx",
+              "packages/nexo-editor",
               "packages/remark-plugins",
               "packages/pdf-tables-parser"
             ]
