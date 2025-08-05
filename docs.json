@@ -59,6 +59,11 @@
           "href": "https://www.nexonauts.com",
           "icon": "book-open-cover"
         },
+         {
+          "anchor": "Portfolio",
+          "href": "https://kanak.eu.org",
+          "icon": "globe"
+        },
         {
           "anchor": "Github",
           "href": "https://github.com/kanakkholwal",
