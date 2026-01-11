@@ -13,6 +13,15 @@ const config = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+      },
+    ],
+  },
 };
 
 export default withMDX(config);
