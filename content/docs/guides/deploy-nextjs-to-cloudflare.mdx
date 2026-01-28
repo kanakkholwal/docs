@@ -1,5 +1,5 @@
 ---
-title: Deploy Nextjs to Cloudflaree Workers
+title: Deploy Nextjs to Cloudflare Workers
 description: deploy your Next.js application on Cloudflare Workers using Open Next.
 ---
 
@@ -91,7 +91,7 @@ Create a `wrangler.jsonc` file in the root of your project with the following co
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "ce-platform",
+  "name": "my-platform",
   "compatibility_date": "2025-03-01",
   "compatibility_flags": [
     "nodejs_compat",
@@ -124,9 +124,9 @@ Create a `wrangler.jsonc` file in the root of your project with the following co
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
      */
   "vars": {
-    "EMAIL_FROM": "no-reply@notifications.nith.eu.org",
-    "EMAIL_FROM_NAME": "College Platform",
-    "EMAIL_REPLY_TO": "support@nith.eu.org"
+    "EMAIL_FROM": "no-reply@notifications.nexnauts.com",
+    "EMAIL_FROM_NAME": "My Platform",
+    "EMAIL_REPLY_TO": "support@nexnauts.com"
   },
   /**
      * Note: Use secrets to store sensitive data.
@@ -139,7 +139,7 @@ Create a `wrangler.jsonc` file in the root of your project with the following co
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "ce-platform"
+      "service": "my-platform"
     }
   ],
   "r2_buckets": [
