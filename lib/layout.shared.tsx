@@ -16,7 +16,7 @@ export function baseOptions(): BaseLayoutProps {
     },
     themeSwitch: {
       enabled: true,
-      mode: "light-dark-system",
+      mode: "light-dark",
     },
     searchToggle: {
       enabled: true,
