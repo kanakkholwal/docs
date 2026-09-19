@@ -5,16 +5,7 @@ import { PiGithubLogoDuotone } from 'react-icons/pi';
 export default function HomePage() {
   return (
     <div className="relative min-h-screen w-full">
-      <div className='relative w-full min-h-dvh'>
-        <Plasma
-          color="#ff6b35"
-          speed={0.6}
-          direction="forward"
-          scale={1.1}
-          opacity={0.8}
-          mouseInteractive={true}
-        />
-      </div>
+ 
       <div className="z-10 container flex flex-col items-center justify-center px-4 absolute inset-0 min-h-dvh">
 
         <div className='space-y-3 mb-10 text-center'>
